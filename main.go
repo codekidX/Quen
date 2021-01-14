@@ -43,12 +43,18 @@ const (
 	Bool   = "Bool"
 	Float  = "Float"
 	Int    = "Int"
+	Fn     = "Function"
 
 	Addition       = "+"
 	Subtraction    = "-"
 	Multiplication = "*"
 	Division       = "/"
 	Modulo         = "%"
+
+	And   = "and"
+	Or    = "or"
+	Is    = "is"
+	IsNot = "isnot"
 )
 
 // Token is the token for quen that is lexed
@@ -108,39 +114,65 @@ func (l *Lexer) checkNext() int {
 }
 
 func (l *Lexer) checkIfKeyword(text string) {
-	switch strings.TrimSpace(text) {
+	target := strings.TrimSpace(text)
+	if strings.Contains(target, " ") {
+		for _, word := range strings.Split(text, " ") {
+			l.addKeyword(word)
+		}
+	} else {
+		l.addKeyword(target)
+	}
+}
+
+func (l *Lexer) addKeyword(word string) {
+	switch word {
 	case "if":
-		l.tokens = append(l.tokens, TokenDef{T: If, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: If, Pos: l.position, Value: word})
 		break
 	case "else":
-		l.tokens = append(l.tokens, TokenDef{T: Else, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: Else, Pos: l.position, Value: word})
 		break
 	case "elif":
-		l.tokens = append(l.tokens, TokenDef{T: ElseIf, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: ElseIf, Pos: l.position, Value: word})
 		break
 	case "for":
-		l.tokens = append(l.tokens, TokenDef{T: For, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: For, Pos: l.position, Value: word})
 		break
 	case "Str":
-		l.tokens = append(l.tokens, TokenDef{T: String, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: String, Pos: l.position, Value: word})
 		break
 	case "Bool":
-		l.tokens = append(l.tokens, TokenDef{T: Bool, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: Bool, Pos: l.position, Value: word})
 		break
 	case "Int":
-		l.tokens = append(l.tokens, TokenDef{T: Int, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: Int, Pos: l.position, Value: word})
 		break
 	case "Float":
-		l.tokens = append(l.tokens, TokenDef{T: Float, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: Float, Pos: l.position, Value: word})
+		break
+	case "Fn":
+		l.tokens = append(l.tokens, TokenDef{T: Fn, Pos: l.position, Value: word})
 		break
 	case "true":
-		l.tokens = append(l.tokens, TokenDef{T: BoolVal, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: BoolVal, Pos: l.position, Value: word})
 		break
 	case "false":
-		l.tokens = append(l.tokens, TokenDef{T: BoolVal, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: BoolVal, Pos: l.position, Value: word})
+		break
+	case "and":
+		l.tokens = append(l.tokens, TokenDef{T: And, Pos: l.position, Value: word})
+		break
+	case "or":
+		l.tokens = append(l.tokens, TokenDef{T: Or, Pos: l.position, Value: word})
+		break
+	case "is":
+		l.tokens = append(l.tokens, TokenDef{T: Is, Pos: l.position, Value: word})
+		break
+	case "isnot":
+		l.tokens = append(l.tokens, TokenDef{T: IsNot, Pos: l.position, Value: word})
 		break
 	default:
-		l.tokens = append(l.tokens, TokenDef{T: Text, Pos: l.position, Value: text})
+		l.tokens = append(l.tokens, TokenDef{T: Text, Pos: l.position, Value: word})
 	}
 }
 
@@ -253,6 +285,7 @@ func (l *Lexer) analyze() error {
 					l.checkIfKeyword(text)
 					break
 				}
+
 				if !regexpLettersMatch(string(l.currentChar)) {
 					l.checkIfKeyword(text)
 					break
@@ -265,6 +298,7 @@ func (l *Lexer) analyze() error {
 						break
 					}
 				}
+
 			}
 			break
 		}

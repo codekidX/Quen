@@ -15,3 +15,17 @@ greet = (name, age){}
 .money = 23.44
 
 .status = true
+
+.array = [1, 2, 3]
+
+for .array {
+    @std::out(v)
+}
+
+if .a is .b and .b isnot .c {
+    @std::out("i dont know whats going on")
+} elif .a is 1 {
+    // do something
+} else {
+    // do something else
+}
