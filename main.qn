@@ -1,0 +1,13 @@
+// quen will have only scope type
+// it morphs according to the value that you assign it with
+// reserved keywords: Int, Str, Float, List, Scope, Fn, Bool, if, as, for, is, isnot,
+
+.a = 1
+.b := 2
+.c = "Ashish"
+
+.d = @import("./d.qn")
+
+.e = @some::func("abc")
+
+greet = (name, age){}
