@@ -8,6 +8,10 @@
 
 .d = @import("./d.qn")
 
-.e = @some::func("abc")
+.e = @json::parse("abc.json")
 
 greet = (name, age){}
+
+.money = 23.44
+
+.status = true

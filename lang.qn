@@ -3,7 +3,7 @@
 // reserved keywords: Int, Str, Float, List, Scope, Fn, Bool, if, as, for, is, isnot, and. or, elif
 // else, type
 
-// May be later
+// ---- May be later---
 def(Person) Scope {
 	first_name = Str
 	last_name = Str
@@ -12,7 +12,7 @@ def(Person) Scope {
 	full_name = Fn() -> Str
 }
 
-// May be later
+// ---- May be later---
 impl(Person) {
 	full_name = (){
 		match(gender) {

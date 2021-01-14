@@ -22,7 +22,6 @@ const (
 	LBrace        = "LBrace"
 	RBrace        = "RBrace"
 	Function      = "Function"
-	String        = "String"
 	Comment       = "Comment"
 	Assignment    = "Assignment"
 	Constant      = "Constant"
@@ -38,6 +37,12 @@ const (
 	If            = "If"
 	Else          = "Else"
 	ElseIf        = "ElseIf"
+	BoolVal       = "Boolean Value"
+
+	String = "String"
+	Bool   = "Bool"
+	Float  = "Float"
+	Int    = "Int"
 
 	Addition       = "+"
 	Subtraction    = "-"
@@ -100,6 +105,43 @@ func (l *Lexer) checkNext() int {
 		return -1
 	}
 	return l.position
+}
+
+func (l *Lexer) checkIfKeyword(text string) {
+	switch strings.TrimSpace(text) {
+	case "if":
+		l.tokens = append(l.tokens, TokenDef{T: If, Pos: l.position, Value: text})
+		break
+	case "else":
+		l.tokens = append(l.tokens, TokenDef{T: Else, Pos: l.position, Value: text})
+		break
+	case "elif":
+		l.tokens = append(l.tokens, TokenDef{T: ElseIf, Pos: l.position, Value: text})
+		break
+	case "for":
+		l.tokens = append(l.tokens, TokenDef{T: For, Pos: l.position, Value: text})
+		break
+	case "Str":
+		l.tokens = append(l.tokens, TokenDef{T: String, Pos: l.position, Value: text})
+		break
+	case "Bool":
+		l.tokens = append(l.tokens, TokenDef{T: Bool, Pos: l.position, Value: text})
+		break
+	case "Int":
+		l.tokens = append(l.tokens, TokenDef{T: Int, Pos: l.position, Value: text})
+		break
+	case "Float":
+		l.tokens = append(l.tokens, TokenDef{T: Float, Pos: l.position, Value: text})
+		break
+	case "true":
+		l.tokens = append(l.tokens, TokenDef{T: BoolVal, Pos: l.position, Value: text})
+		break
+	case "false":
+		l.tokens = append(l.tokens, TokenDef{T: BoolVal, Pos: l.position, Value: text})
+		break
+	default:
+		l.tokens = append(l.tokens, TokenDef{T: Text, Pos: l.position, Value: text})
+	}
 }
 
 func (l *Lexer) nextUntilNewLine() {
@@ -208,16 +250,18 @@ func (l *Lexer) analyze() error {
 			for {
 				spcl, _ := regexp.MatchString("[$-/:-?{-~!\"^_`\\[\\]]", string(l.currentChar))
 				if spcl || l.currentChar == '\n' {
-					l.tokens = append(l.tokens, TokenDef{T: Text, Pos: l.position, Value: text})
+					l.checkIfKeyword(text)
 					break
 				}
 				if !regexpLettersMatch(string(l.currentChar)) {
-					l.tokens = append(l.tokens, TokenDef{T: Text, Pos: l.position, Value: text})
+					l.checkIfKeyword(text)
 					break
 				} else {
 					text += string(l.currentChar)
-					pos := l.next()
-					if pos == -1 || l.nextChar == '\n' {
+					l.next()
+					pos := l.checkNext()
+					if pos == -1 {
+						l.checkIfKeyword(text)
 						break
 					}
 				}
