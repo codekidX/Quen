@@ -170,8 +170,8 @@ public:
     int next();
     int check_next();
     std::list<TokenDef> get_tokens();
-    void checkIfKeyword(const char *text);
-    void addKeyword(const char *text);
+    void checkIfKeyword(std::string text);
+    void addKeyword(std::string word);
 };
 
 std::list<TokenDef> Lexer::get_tokens()

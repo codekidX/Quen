@@ -3,7 +3,7 @@
 #include "quen.h"
 #include <list>
 #include <regex>
-#include <util.h>
+#include "util.h"
 
 using namespace std;
 
@@ -45,6 +45,7 @@ void Lexer::analyze()
                 comment_def.token_str = get_str_token(Comment);
                 tokens.push_back(comment_def);
 
+                this->next();
                 this->next();
             }
             else
@@ -234,12 +235,7 @@ void Lexer::analyze()
                 bool matched = regex_match(curr_str.begin(), curr_str.end(), spcl);
                 if (matched)
                 {
-                    struct TokenDef text_def;
-                    text_def.t = Text;
-                    text_def.start = position;
-                    text_def.token_str = get_str_token(Text);
-                    text_def.value = text;
-                    tokens.push_back(text_def);
+                    this->checkIfKeyword(text);
                     flag = false;
                 }
                 else
@@ -249,12 +245,7 @@ void Lexer::analyze()
                     int pos = this->check_next();
                     if (pos == -1)
                     {
-                        struct TokenDef text_def;
-                        text_def.t = Text;
-                        text_def.start = position;
-                        text_def.token_str = get_str_token(Text);
-                        text_def.value = text;
-                        tokens.push_back(text_def);
+                        this->checkIfKeyword(text);
                         flag = false;
                     }
                 }
@@ -298,22 +289,138 @@ int Lexer::check_next()
     return pos;
 }
 
-void Lexer::checkIfKeyword(const char *text)
+void Lexer::checkIfKeyword(string text)
 {
-    // string trimmed_text = string((sizeof(text) / sizeof(char)), text);
-    // trimmed_text = string->trim(trimmed_text);
-    // target := strings.TrimSpace(text)
-    // if strings.Contains(target, " ") {
-    // 	for _, word := range strings.Split(text, " ") {
-    // 		l.addKeyword(word)
-    // 	}
-    // } else {
-    // 	l.addKeyword(target)
-    // }
+    string trimmed = trim(text, "Cannot trim this string");
+
+    if (trimmed.find_first_of(' ') != string::npos)
+    {
+        string word = "";
+        for (auto letter : word)
+        {
+            if (letter == ' ')
+            {
+                this->addKeyword(word);
+                word = "";
+            }
+            else
+            {
+                word += letter;
+            }
+        }
+    }
+    else
+    {
+        this->addKeyword(trimmed);
+    }
 }
 
-void Lexer::addKeyword(const char *word)
+void Lexer::addKeyword(string word)
 {
+    if (word == "if")
+    {
+        struct TokenDef if_def;
+        if_def.t = If;
+        if_def.start = position;
+        if_def.token_str = get_str_token(If);
+        tokens.push_back(if_def);
+    }
+    else if (word == "else")
+    {
+        struct TokenDef else_def;
+        else_def.t = Else;
+        else_def.start = position;
+        else_def.token_str = get_str_token(Else);
+        tokens.push_back(else_def);
+    }
+    else if (word == "elif")
+    {
+        struct TokenDef elif_def;
+        elif_def.t = ElseIf;
+        elif_def.start = position;
+        elif_def.token_str = get_str_token(ElseIf);
+        tokens.push_back(elif_def);
+    }
+    else if (word == "for")
+    {
+        struct TokenDef for_def;
+        for_def.t = For;
+        for_def.start = position;
+        for_def.token_str = get_str_token(For);
+        tokens.push_back(for_def);
+    } else if (word == "Str") {
+struct TokenDef str_def;
+        str_def.t = String;
+        str_def.start = position;
+        str_def.token_str = get_str_token(String);
+        tokens.push_back(str_def);
+    } else if (word == "Bool") {
+        struct TokenDef bool_def;
+        bool_def.t = Bool;
+        bool_def.start = position;
+        bool_def.token_str = get_str_token(Bool);
+        tokens.push_back(bool_def);
+    } else if (word == "Int") {
+struct TokenDef int_def;
+        int_def.t = Int;
+        int_def.start = position;
+        int_def.token_str = get_str_token(Int);
+        tokens.push_back(int_def);
+    } else if (word == "Float") {
+struct TokenDef float_def;
+        float_def.t = Float;
+        float_def.start = position;
+        float_def.token_str = get_str_token(Float);
+        tokens.push_back(float_def);
+    } else if (word == "Fn") {
+        struct TokenDef fn_def;
+        fn_def.t = Fn;
+        fn_def.start = position;
+        fn_def.token_str = get_str_token(Fn);
+        tokens.push_back(fn_def);
+    } else if (word == "true") {
+        struct TokenDef true_def;
+        true_def.t = BoolVal;
+        true_def.start = position;
+        true_def.token_str = get_str_token(BoolVal);
+        tokens.push_back(true_def);
+    }else if (word == "false") {
+        struct TokenDef false_def;
+        false_def.t = BoolVal;
+        false_def.start = position;
+        false_def.token_str = get_str_token(BoolVal);
+        tokens.push_back(false_def);
+    } else if (word == "and") {
+        struct TokenDef and_def;
+        and_def.t = And;
+        and_def.start = position;
+        and_def.token_str = get_str_token(And);
+        tokens.push_back(and_def);
+    } else if (word == "or") {
+        struct TokenDef or_def;
+        or_def.t = Or;
+        or_def.start = position;
+        or_def.token_str = get_str_token(Or);
+        tokens.push_back(or_def);
+    } else if (word == "is") {
+        struct TokenDef is_def;
+        is_def.t = BoolVal;
+        is_def.start = position;
+        is_def.token_str = get_str_token(BoolVal);
+        tokens.push_back(is_def);
+    } else if (word == "isnot") {
+        struct TokenDef isnot_def;
+        isnot_def.t = IsNot;
+        isnot_def.start = position;
+        isnot_def.token_str = get_str_token(IsNot);
+        tokens.push_back(isnot_def);
+    } else {
+        struct TokenDef text_def;
+        text_def.t = Text;
+        text_def.start = position;
+        text_def.token_str = get_str_token(Text);
+        tokens.push_back(text_def);
+    }
 }
 
 int main()

@@ -1,5 +1,8 @@
 #include <string>
 
+#ifndef UTIL_H
+#define UTIL_H
+
 const char* ws = " \t\n\r\f\v";
 
 // trim from end of string (right)
@@ -21,3 +24,14 @@ inline std::string& trim(std::string& s, const char* t = ws)
 {
     return ltrim(rtrim(s, t), t);
 }
+
+inline std::string convert_to_str(const char* text, int size) {
+    std::string str = "";
+    for (int i = 0; i < size; i++) {
+        str += text[i];
+    }
+
+    return str;
+}
+
+#endif
