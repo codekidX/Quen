@@ -348,73 +348,97 @@ void Lexer::addKeyword(string word)
         for_def.start = position;
         for_def.token_str = get_str_token(For);
         tokens.push_back(for_def);
-    } else if (word == "Str") {
-struct TokenDef str_def;
+    }
+    else if (word == "Str")
+    {
+        struct TokenDef str_def;
         str_def.t = String;
         str_def.start = position;
         str_def.token_str = get_str_token(String);
         tokens.push_back(str_def);
-    } else if (word == "Bool") {
+    }
+    else if (word == "Bool")
+    {
         struct TokenDef bool_def;
         bool_def.t = Bool;
         bool_def.start = position;
         bool_def.token_str = get_str_token(Bool);
         tokens.push_back(bool_def);
-    } else if (word == "Int") {
-struct TokenDef int_def;
+    }
+    else if (word == "Int")
+    {
+        struct TokenDef int_def;
         int_def.t = Int;
         int_def.start = position;
         int_def.token_str = get_str_token(Int);
         tokens.push_back(int_def);
-    } else if (word == "Float") {
-struct TokenDef float_def;
+    }
+    else if (word == "Float")
+    {
+        struct TokenDef float_def;
         float_def.t = Float;
         float_def.start = position;
         float_def.token_str = get_str_token(Float);
         tokens.push_back(float_def);
-    } else if (word == "Fn") {
+    }
+    else if (word == "Fn")
+    {
         struct TokenDef fn_def;
         fn_def.t = Fn;
         fn_def.start = position;
         fn_def.token_str = get_str_token(Fn);
         tokens.push_back(fn_def);
-    } else if (word == "true") {
+    }
+    else if (word == "true")
+    {
         struct TokenDef true_def;
         true_def.t = BoolVal;
         true_def.start = position;
         true_def.token_str = get_str_token(BoolVal);
         tokens.push_back(true_def);
-    }else if (word == "false") {
+    }
+    else if (word == "false")
+    {
         struct TokenDef false_def;
         false_def.t = BoolVal;
         false_def.start = position;
         false_def.token_str = get_str_token(BoolVal);
         tokens.push_back(false_def);
-    } else if (word == "and") {
+    }
+    else if (word == "and")
+    {
         struct TokenDef and_def;
         and_def.t = And;
         and_def.start = position;
         and_def.token_str = get_str_token(And);
         tokens.push_back(and_def);
-    } else if (word == "or") {
+    }
+    else if (word == "or")
+    {
         struct TokenDef or_def;
         or_def.t = Or;
         or_def.start = position;
         or_def.token_str = get_str_token(Or);
         tokens.push_back(or_def);
-    } else if (word == "is") {
+    }
+    else if (word == "is")
+    {
         struct TokenDef is_def;
         is_def.t = BoolVal;
         is_def.start = position;
         is_def.token_str = get_str_token(BoolVal);
         tokens.push_back(is_def);
-    } else if (word == "isnot") {
+    }
+    else if (word == "isnot")
+    {
         struct TokenDef isnot_def;
         isnot_def.t = IsNot;
         isnot_def.start = position;
         isnot_def.token_str = get_str_token(IsNot);
         tokens.push_back(isnot_def);
-    } else {
+    }
+    else
+    {
         struct TokenDef text_def;
         text_def.t = Text;
         text_def.start = position;
