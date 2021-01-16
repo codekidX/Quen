@@ -8,7 +8,6 @@ using namespace std;
 #include "lexer.h"
 #include "util.h"
 
-
 Lexer::Lexer(const char *file_name)
 {
     this->file_name = file_name;
@@ -70,9 +69,9 @@ void Lexer::analyze()
             if (next_char == ':')
             {
                 struct TokenDef colon_def;
-                colon_def.t = ScopeAccessor;
+                colon_def.t = TypeAssignment;
                 colon_def.start = position;
-                colon_def.token_str = get_str_token(ScopeAccessor);
+                colon_def.token_str = get_str_token(TypeAssignment);
 
                 tokens.push_back(colon_def);
 
@@ -103,6 +102,36 @@ void Lexer::analyze()
             dot_def.start = position;
             dot_def.token_str = get_str_token(Dot);
             tokens.push_back(dot_def);
+
+            this->next();
+            break;
+        }
+        case '!':
+        {
+            if (next_char == '!')
+            {
+                struct TokenDef private_def;
+                private_def.t = Private;
+                private_def.start = position;
+                private_def.token_str = get_str_token(Private);
+                tokens.push_back(private_def);
+
+                this->next();
+                this->next();
+            }
+            else
+            {
+                this->next();
+            }
+            break;
+        }
+        case '#':
+        {
+            struct TokenDef root_def;
+            root_def.t = RootScope;
+            root_def.start = position;
+            root_def.token_str = get_str_token(RootScope);
+            tokens.push_back(root_def);
 
             this->next();
             break;

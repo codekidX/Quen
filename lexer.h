@@ -7,7 +7,7 @@
 enum Token
 {
     Definition,
-    ScopeAccessor,
+    TypeAssignment,
     Scope,
     ScopeStart,
     ScopeEnd,
@@ -32,6 +32,8 @@ enum Token
     Else,
     ElseIf,
     BoolVal,
+    Private,
+    RootScope,
 
     String,
     Bool,
@@ -90,8 +92,8 @@ inline std::string get_str_token(Token t)
     {
     case Definition:
         return "Definition";
-    case ScopeAccessor:
-        return "ScopeAccessor";
+    case TypeAssignment:
+        return "TypeAssignment";
     case Scope:
         return "Scope";
     case ScopeStart:
@@ -171,6 +173,10 @@ inline std::string get_str_token(Token t)
         return "Is";
     case IsNot:
         return "IsNot";
+    case Private:
+        return "Private";
+    case RootScope:
+        return "RootScope";
     default:
         break;
     }

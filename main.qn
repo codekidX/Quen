@@ -2,30 +2,34 @@
 // it morphs according to the value that you assign it with
 // reserved keywords: Int, Str, Float, List, Scope, Fn, Bool, if, as, for, is, isnot,
 
-.a = 1
-.b := 2
-.c = "Ashish"
+a = 1
+b := 2
+c = "Ashish"
 
-.d = @import("./d.qn")
+d = @import("./d.qn")
 
-.e = @json::parse("abc.json")
+e = @json.parse("abc.json")
 
 greet = (name, age){}
 
-.money = 23.44
+money = 23.44
 
-.status = true
+status = true
 
-.array = [1, 2, 3]
+array = [1, 2, 3]
 
-for .array {
-    @std::out(v)
+for array {
+    @std.out(v)
 }
 
-if .a is .b and .b isnot .c {
-    @std::out("i dont know whats going on")
-} elif .a is 1 {
+if a is b and b isnot c {
+    @std.out("i dont know whats going on")
+} elif a is 1 {
     // do something
 } else {
     // do something else
+}
+
+config = {
+    !!name = "Some name"
 }

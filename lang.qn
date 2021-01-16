@@ -1,6 +1,6 @@
 // quen will have only scope type
 // it morphs according to the value that you assign it with
-// reserved keywords: Int, Str, Float, List, Scope, Fn, Bool, if, as, for, is, isnot, and. or, elif
+// reserved keywords: Int, Str, Float, List, Scope, Fn, Bool, if, as, for, is, isnot, and or, elif
 // else, type
 
 // ---- May be later---
@@ -25,10 +25,10 @@ impl(Person) {
 
 def(PlaceKeeper) Fn() -> [List(Person), Int, Bool]
 
-.app = @import("./app.qn") // THINK: may be we support namespace afterwards
+app = @import("./app.qn") // THINK: may be we support namespace afterwards
 
-.data = @json::parse_from_file("./file.json") // Morph data type
-@std::out(data::name)
+data = @json.parse_from_file("./file.json") // Morph data type
+@std.out(data.name)
 
 // optional type system, most of the std lib must be written with
 // type safe scopes and functions
@@ -36,36 +36,36 @@ greet = (name){}
 
 person = {}
 
-if data::has("name") and data::has("occupation.salary") {
-	@std::out(data.name)
+if data.has("name") and data.has("occupationsalary") {
+	@std.out(dataname)
 }
 
-.final_path = @archive::zip_folder("./folder", "./folder.zip") {
-	@std::error(e)
+final_path = @archive.zip_folder("/folder", "/folderzip") {
+	@std.error(e)
 	@exit(1)
 }
 
-a = data::name // ERROR: cannot access name of null type
-.b = 1 // this is a const with morph type int and value 1
+a = data.name // ERROR: cannot access name of null type
+b = 1 // this is a const with morph type int and value 1
 
-b::type // will return INT (reserved keyword)
+b.type // will return INT (reserved keyword)
 
 c = a + b // error: cannot add int and string
 c = a as Int + b // OR
 c = "\(a)\(b)"
 
-.money = 23.44
+money = 2344
 d = "Ashish has $\(money) in his pocket"
 
 // creating a morphed type
 config = {
-	!name = "Ashish" // this says that name can be edited only inside this scope
-	main_name = #::data::name
+	!!name = "Ashish" // this says that name can be edited only inside this scope
+	main_name = #.data.name
 
-	get_name = (){ name }
+	get_name = () = name
 }
 
-config::get_name() // valid and will return Ashish
+config.get_name() // valid and will return Ashish
 
 
 greet = (name){
@@ -78,7 +78,7 @@ greet = (name){
 array = [1, 2, 3]
 for array {
 	// |i, v|
-	@std::out(v)
+	@std.out(v)
 }
 
 for data {
@@ -90,4 +90,12 @@ for b {} // error type int cannot be looped through
 for d {
 	// |i, v|
 	// v = [A, s, h, i, s, h, _, h, a, s]
+}
+
+for @collection.of_int(1, 10) {
+
+}
+
+for @collection.of_float(1, 10, {precision = 2}) {
+
 }
